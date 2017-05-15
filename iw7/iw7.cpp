@@ -14,36 +14,12 @@
 //CWinApp theApp;
 
 using namespace std;
+
+#ifdef _X86_
+extern "C" { int _afxForceUSRDLL; }
+#else
 extern "C" { int __afxForceUSRDLL; }
-//int main()
-//{
-//    int nRetCode = 0;
-//
-//    HMODULE hModule = ::GetModuleHandle(nullptr);
-//
-//    if (hModule != nullptr)
-//    {
-//        // initialize MFC and print and error on failure
-//        if (!AfxWinInit(hModule, nullptr, ::GetCommandLine(), 0))
-//        {
-//            // TODO: change error code to suit your needs
-//            wprintf(L"Fatal Error: MFC initialization failed\n");
-//            nRetCode = 1;
-//        }
-//        else
-//        {
-//            // TODO: code your application's behavior here.
-//        }
-//    }
-//    else
-//    {
-//        // TODO: change error code to suit your needs
-//        wprintf(L"Fatal Error: GetModuleHandle failed\n");
-//        nRetCode = 1;
-//    }
-//
-//    return nRetCode;
-//}
+#endif
 
 typedef int(__stdcall* _CBuf_AddText)(int, const char*);
 _CBuf_AddText CBuf_AddText = (_CBuf_AddText)0x140B34B10;
