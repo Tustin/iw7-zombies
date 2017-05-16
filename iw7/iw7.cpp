@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "iw7.h"
+#include "Resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -24,12 +25,43 @@ extern "C" { int __afxForceUSRDLL; }
 typedef int(__stdcall* _CBuf_AddText)(int, const char*);
 _CBuf_AddText CBuf_AddText = (_CBuf_AddText)0x140B34B10;
 
+BOOL CALLBACK EventHandler(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+	switch (uMsg)
+	{
+	case WM_COMMAND:
+		if (HIWORD(wParam) == BN_CLICKED)
+		{
+			switch (wParam)
+			{
+			case IDOK:
+				char cmd[1024];
+				int commandLen = strlen(cmd);
+				
+				GetDlgItemTextA(hDlg, IDC_EDIT1, cmd, commandLen);
+
+				CBuf_AddText(0, cmd);
+			}
+		}
+		break;
+	case WM_CLOSE:
+		DestroyWindow(hDlg);
+		ExitThread(0);
+		break;
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		ExitThread(0);
+		break;
+	default:
+		return DefWindowProc(hDlg, uMsg, wParam, lParam);
+	}
+	return 0;
+}
+
+
 DWORD WINAPI MainWindow(HMODULE hMod) {
 	HMODULE iw7 = GetModuleHandle(NULL);
 
-	CBuf_AddText(0, "map cp_zmb\n");
-	MessageBoxA(NULL, "working", "ok", MB_OK);
-
+	DialogBox(hMod, MAKEINTRESOURCE(IDD_DIALOG1), NULL, (DLGPROC)EventHandler);
 	ExitThread(0);
 	return 0;
 }
