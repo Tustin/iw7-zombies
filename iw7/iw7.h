@@ -4,6 +4,9 @@
 // that uses this DLL. This way any other project whose source files include this file see 
 // IW7_API functions as being imported from a DLL, whereas this DLL sees symbols
 // defined with this macro as being exported.
+
+#include "Commands.hpp"
+
 #ifdef IW7_EXPORTS
 #define IW7_API __declspec(dllexport)
 #else
@@ -20,3 +23,5 @@ public:
 extern IW7_API int niw7;
 
 IW7_API int fniw7(void);
+
+
